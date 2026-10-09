@@ -1,0 +1,21 @@
+# 의존성 / 빌드 결과
+node_modules/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+
+# npm run setup 으로 생성
+android/app/src/main/core-assets/
+
+# 서명 키: 절대 올리지 말 것
+android/keystore/
+*.jks
+*.keystore
+keystore.properties
+
+# 기타
+.DS_Store
+.claude/
+.vercel

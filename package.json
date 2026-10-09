@@ -1,0 +1,17 @@
+{
+  "name": "hq-twitter-android",
+  "version": "1.2.0",
+  "description": "X(트위터)의 영상과 GIF를 최고 화질로 갤럭시 갤러리에 저장하는 안드로이드 앱",
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "serve": "node serve.mjs"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "@ffmpeg/core": "0.12.6",
+    "@ffmpeg/ffmpeg": "0.12.10",
+    "@ffmpeg/util": "0.12.1"
+  },
+  "private": true,
+  "license": "GPL-3.0-or-later"
+}

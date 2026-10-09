@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.application'
+}
+
+// 배포용 서명 키 (android/keystore/ 에 있음, 절대 공개 저장소에 올리지 말 것)
+def keystoreProps = new Properties()
+def keystoreFile = rootProject.file('keystore/keystore.properties')
+if (keystoreFile.exists()) keystoreFile.withInputStream { keystoreProps.load(it) }
+
+android {
+    namespace 'com.hqtwitter'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.hqtwitter'
+        minSdk 29        // MediaStore RELATIVE_PATH로 권한 없이 갤러리 저장
+        targetSdk 35
+        versionCode 3
+        versionName '1.2'
+    }
+
+    sourceSets {
+        // 웹 UI(public/)를 그대로 쓰고, ffmpeg 코어는 앱에 내장
+        main.assets.srcDirs = ['../../public', 'src/main/core-assets']
+    }
+
+    signingConfigs {
+        if (keystoreFile.exists()) {
+            release {
+                storeFile rootProject.file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // 서명 키가 없으면(다른 사람이 소스로 빌드할 때) 개발용 키로 서명
+            signingConfig keystoreFile.exists() ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+}
